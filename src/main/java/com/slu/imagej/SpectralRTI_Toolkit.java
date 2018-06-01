@@ -921,6 +921,7 @@ public class SpectralRTI_Toolkit implements Command {
             }
             //Think about acRtiDesired || acRakingDesired so we can use just one loop over the hemishpere captures for all processing.  
             if (acRtiDesired) {
+                logService.log().info("acrti desired if{}");
 		/**
                  *create series of images with luminance from hemisphere captures and chrominance from color image
                  */
@@ -948,7 +949,6 @@ public class SpectralRTI_Toolkit implements Command {
                 ImagePlus cr = WindowManager.getImage("Cr");
                 cb.hide();
                 cr.hide();
-                logService.log().info("Set stack pieces...");
                 ImagePlus keptPieces = con.concatenate(cb, cr, true);
                 //imp.flush();
                 imp.close();
@@ -1013,8 +1013,10 @@ public class SpectralRTI_Toolkit implements Command {
                 createLpFile("AccurateColor", projectDirectory); 
                 WindowManager.closeAllWindows(); // IS this needed?
 		runFitter("AccurateColor");
+                logService.log().info("END acrti desired if{}");
             }
             if (acRakingDesired) {
+                logService.log().info("acraking desired desired if{}");
                 imp = opener.openImage( accurateColorSource.toString() ); 
                 //imglib2_img = ImagePlusAdapter.wrap( imp );
                 imp.setTitle("RGBtiff");
@@ -1046,7 +1048,6 @@ public class SpectralRTI_Toolkit implements Command {
                     imp = opener.openImage( transmissiveSource ); 
                     imp.setTitle("TransmissiveLuminance");
                     IJ.run(imp, "8-bit", "");
-                    logService.log().info("Set stack pieces...");
                     ImagePlus keptPieces = con.concatenate(cb, cr, true);
                     ImagePlus stack = con.concatenate(imp, keptPieces, true);
                     stack.setTitle("YCC");
@@ -1084,7 +1085,6 @@ public class SpectralRTI_Toolkit implements Command {
                                 IJ.run(imp, "Multiply...", "value="+normalizationFixedValue+""); //Multiplies the image or selection by the specified real constant. With 8-bit images, results greater than 255 are set to 255
                             }
                             IJ.run(imp, "8-bit", "");
-                            logService.log().info("Set stack pieces...");
                             ImagePlus keptPieces = con.concatenate(cb, cr, true);
                             //cb.flush();
                             cb.close(); //Can this be closed??
@@ -1120,6 +1120,7 @@ public class SpectralRTI_Toolkit implements Command {
                 cb.close();
                 //cr.flush();
                 cr.close();
+                logService.log().info("END acraking desired desired if{}");
             }
             IJ.run("Collect Garbage");
             if (xsRtiDesired || xsRakingDesired) {
@@ -1282,7 +1283,6 @@ public class SpectralRTI_Toolkit implements Command {
                     //imglib2_img = ImagePlusAdapter.wrap( imp );
                     imp.setTitle("TransmissiveLuminance");
                     IJ.run(imp, "8-bit", "");
-                    logService.log().info("Set stack pieces...");
                     ImagePlus stack2 = con.concatenate(imp, keptPieces, true);
                     stack2.setTitle("YCC");
                     IJ.run(stack2,"YCbCr stack to RGB","");
